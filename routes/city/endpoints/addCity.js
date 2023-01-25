@@ -1,7 +1,10 @@
 import HTTPError from "../../../lib/errors/HTTPError.js";
 import { compileSchema } from "../../../lib/utility.js";
 
-const controller = (req, res) => {
+const controller = ({ body: { name } }, res) => {
+  // check if it exists
+  // add it
+  // return generated id
   throw new HTTPError({
     code: "ToBeImplemented",
     status: 501,

@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  cityapp-mongo:
+    container_name: cityapp-mongo
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 1234
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./docker/mongo/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    networks:
+      - cityapp-network
+  cityapp-be:
+    container_name: cityapp-be
+    restart: always
+    tty: true
+    ports:
+      - "3001:3001"
+    build:
+      context: .
+      dockerfile: docker/be/Dockerfile.dev
+    volumes:
+      - ./:/app/
+    networks:
+      - cityapp-network
+networks:
+  cityapp-network:
+    driver: bridge
