@@ -4,8 +4,11 @@ import errorHandler from "./lib/middlewares/errorHandler.js";
 import cityRouter from "./routes/city/router.js";
 const app = express();
 
+app.use(express.json());
+app.disable("x-powered-by");
+
 app.use("/v1/city", cityRouter);
-app.all("*", (req, res) => {
+app.all("*", () => {
   throw new HTTPError({
     code: "NotFound",
     status: 404,
