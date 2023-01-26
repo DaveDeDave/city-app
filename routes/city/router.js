@@ -7,7 +7,7 @@ import removeCity from "./endpoints/removeCity.js";
 const cityRouter = Router();
 
 cityRouter.post("/", validateRequest(addCity.schema), addCity.controller);
-cityRouter.get("/", getAllCities.controller);
+cityRouter.get("/", validateRequest(getAllCities.schema), getAllCities.controller);
 cityRouter.get("/:id", validateRequest(getCity.schema), getCity.controller);
 cityRouter.delete("/:id", validateRequest(removeCity.schema), removeCity.controller);
 

@@ -17,3 +17,5 @@ node_modules
 !.yarn/versions
 
 .vscode
+.env
+dev.env

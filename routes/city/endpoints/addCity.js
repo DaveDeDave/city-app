@@ -1,16 +1,20 @@
 import HTTPError from "../../../lib/errors/HTTPError.js";
-import { compileSchema } from "../../../lib/utility.js";
+import { cityExists } from "../../../lib/openweathermap.js";
+import { compileSchema, wrapAsyncController } from "../../../lib/utility.js";
+import City from "../../../models/City.js";
 
-const controller = ({ body: { name } }, res) => {
-  // check if it exists
-  // add it
-  // return generated id
-  throw new HTTPError({
-    code: "ToBeImplemented",
-    status: 501,
-    message: "To be implemented"
-  });
-};
+const controller = wrapAsyncController(async ({ body: { name } }, res) => {
+  if (!(await cityExists(name))) {
+    throw new HTTPError({
+      code: "NotExists",
+      status: 400,
+      message: "The specified city does not exist"
+    });
+  }
+  const city = new City({ name });
+  const { _id } = await city.save();
+  res.json({ _id });
+});
 
 const schema = {
   bodyValidator: compileSchema({

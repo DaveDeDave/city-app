@@ -3,7 +3,6 @@ import HTTPError from "./lib/errors/HTTPError.js";
 import errorHandler from "./lib/middlewares/errorHandler.js";
 import { connectToMongo } from "./lib/utility.js";
 import cityRouter from "./routes/city/router.js";
-import City from "./models/City.js";
 const app = express();
 
 await connectToMongo();
