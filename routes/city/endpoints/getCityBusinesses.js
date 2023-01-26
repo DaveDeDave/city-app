@@ -1,22 +1,23 @@
 import mongoose from "mongoose";
-import { compileSchema, wrapAsyncController } from "../../../lib/utility.js";
+import { calculateSkip, compileSchema, wrapAsyncController } from "../../../lib/utility.js";
 import City from "../../../models/City.js";
-import { getWeather } from "../../../lib/openweathermap.js";
 import { getBusinesses } from "../../../lib/yelp.js";
 import HTTPError from "../../../lib/errors/HTTPError.js";
 
-const controller = wrapAsyncController(async ({ params: { id } }, res) => {
+const controller = wrapAsyncController(async ({ params: { id }, query: { page, quantity } }, res) => {
+  page = !page || isNaN(Number(page)) ? 1 : Number(page);
+  const limit = !quantity || isNaN(Number(quantity)) ? 5 : Number(quantity);
+  const skip = calculateSkip(limit, page);
   const city = (await City.findOne({ _id: mongoose.mongo.ObjectId(id) })).toObject();
   if (!city) throw new HTTPError({
     code: "NotExists",
     status: 404,
     message: "The specified city does not exist"
   });
-  city.weather = await getWeather(city.name);
   city.businesses = await getBusinesses({
     name: city.name,
-    limit: 5,
-    skip: 0
+    limit,
+    skip
   });
   res.json(city);
 });
@@ -29,7 +30,15 @@ const schema = {
       id: { type: "string" }
     },
     additionalProperties: false
-  })
+  }),
+  queryValidator: compileSchema({
+    type: "object",
+    properties: {
+      quantity: { type: "string" },
+      page: { type: "string" }
+    },
+    additionalProperties: false
+  }),
 };
 
 export default { controller, schema };

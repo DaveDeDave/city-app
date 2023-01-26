@@ -2,8 +2,6 @@ import mongoose from "mongoose";
 import { compileSchema, wrapAsyncController } from "../../../lib/utility.js";
 import City from "../../../models/City.js";
 import { getWeather } from "../../../lib/openweathermap.js";
-import { getBusinesses } from "../../../lib/yelp.js";
-import HTTPError from "../../../lib/errors/HTTPError.js";
 
 const controller = wrapAsyncController(async ({ params: { id } }, res) => {
   const city = (await City.findOne({ _id: mongoose.mongo.ObjectId(id) })).toObject();
@@ -13,11 +11,6 @@ const controller = wrapAsyncController(async ({ params: { id } }, res) => {
     message: "The specified city does not exist"
   });
   city.weather = await getWeather(city.name);
-  city.businesses = await getBusinesses({
-    name: city.name,
-    limit: 5,
-    skip: 0
-  });
   res.json(city);
 });
 
