@@ -6,7 +6,7 @@ import { getBusinesses } from "../../../lib/yelp.js";
 import HTTPError from "../../../lib/errors/HTTPError.js";
 
 const controller = wrapAsyncController(async ({ params: { id } }, res) => {
-  const city = (await City.findOne({ _id: mongoose.mongo.ObjectId(id) })).toObject();
+  const city = (await City.findOne({ _id: mongoose.mongo.ObjectId(id) }))?.toObject();
   if (!city) throw new HTTPError({
     code: "NotExists",
     status: 404,

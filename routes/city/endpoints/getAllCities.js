@@ -1,5 +1,5 @@
 import { getWeather } from "../../../lib/openweathermap.js";
-import { compileSchema, wrapAsyncController } from "../../../lib/utility.js";
+import { calculateSkip, compileSchema, wrapAsyncController } from "../../../lib/utility.js";
 import { getBusinesses } from "../../../lib/yelp.js";
 import City from "../../../models/City.js";
 
