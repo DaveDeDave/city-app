@@ -4,3 +4,11 @@ db.createUser({
   pwd: "1234",
   roles: [{ role: "dbOwner", db: "cityapp" }]
 });
+db.createCollection("cities");
+db.cities.insertMany([
+  { "name": "Turin" },
+  { "name": "Milan" },
+  { "name": "Rome" },
+  { "name": "New York" },
+  { "name": "London" }
+]);

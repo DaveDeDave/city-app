@@ -9,7 +9,7 @@
   "scripts": {
     "docker:start:dev": "docker-compose -f docker-compose.dev.yml up -d --build",
     "docker:stop:dev": "docker-compose -f docker-compose.dev.yml down",
-    "dev": "nodemon -L --watch . -r dotenv/config server.js dotenv_config_path=dev.env"
+    "dev:docker": "nodemon -L --watch . -r dotenv/config server.js dotenv_config_path=dev.docker.env"
   },
   "dependencies": {
     "ajv": "^8.12.0",
